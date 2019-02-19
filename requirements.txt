@@ -1,6 +1,5 @@
 aiohttp==2.3.9
 asyncio-extras==1.3.0
-attrs==17.4.0
 google-api-core==0.1.4
 google-auth==1.3.0
 # there is a bugfix in this commit but it hasn't been released yet (as of
