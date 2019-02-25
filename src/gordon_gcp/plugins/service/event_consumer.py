@@ -380,8 +380,12 @@ class GPSEventConsumer:
 
         try:
             # we're running in a threadpool because this is blocking
+            logging.error(f'Marker 2')
+            raise Exception("yolo run error swag")
+            logging.error(f'Marker after exception')
             future.result()
         except Exception as e:
+            logging.error(f'Marker 5')
             self._subscriber.close()
             logging.error(f'Issue polling subscription: {e}', exc_info=e)
             raise exceptions.GCPGordonError(e)
@@ -394,6 +398,7 @@ class GPSEventConsumer:
         :obj:`self.success_channel` to be handled by an IEnricher
         plugin.
         """
+        logging.error(f'Marker 1')
         main_loop = asyncio.get_event_loop()
         # so many threads, name this so it's identifiable
         pfx = 'ThreadPoolExecutor-GPSEventConsumer'
@@ -403,4 +408,6 @@ class GPSEventConsumer:
         #       workers
         executor = concurrent.futures.ThreadPoolExecutor(thread_name_prefix=pfx)
         coro = main_loop.run_in_executor(executor, self._manage_subs)
-        await asyncio.gather(coro, loop=main_loop, return_exceptions=True)
+        logging.error(f'Marker 3')
+        await coro
+        logging.error(f'Marker 4')
